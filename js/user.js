@@ -9,12 +9,16 @@ logicaCarrito();
 const miCarrito = new carrito([])
 
 function logicaCarrito() {
+    
     let verCarrito = document.querySelector(".verCarrito");
-    let carritoActual= document.getElementById("carritoActual");
+    
     verCarrito.addEventListener("click",()=>{
-        mostrarCarrito(miCarrito)
-        mostrarTotalCarrito()
-        $("#carritoModal").modal("toggle");
+        
+        mostrarCarrito(miCarrito);
+        mostrarTotalCarrito();
+        
+        console.log(miCarrito)
+
 
     })
     prodAlmacenados.forEach(producto => {
@@ -31,6 +35,9 @@ function logicaCarrito() {
                 let cantidad = document.getElementById(`itemCantidad${producto.id}`);
                 productoParaCarrito.cantidad = Number(cantidad.value)
                 miCarrito.agregarProducto(productoParaCarrito)
+                
+               
+                
                 
                 
 

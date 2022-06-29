@@ -1,3 +1,4 @@
+
 function crearTarjeta() {
 
 
@@ -16,7 +17,7 @@ function crearTarjeta() {
                                 <img src="../productos_img/producto_${producto.id}.jpg"class="imagenesProductos card-img-top" style="height:200px" alt="">
                                 <div class="card-body">
                                 <h3 class="card-title">${producto.nombre}</h3>
-                                <p class="card-text">Precio :$${producto.precio}.-</p>
+                                <p class="card-text">Precio :$${producto.precio}.- ${producto.um}</p>
                                 <p class=" categoriaProducto card-text">Categoria :${producto.categoria}</p> 
                                 </div>`;
     }
@@ -29,7 +30,7 @@ function mostrarProductos() {
         let btnCarrito = document.createElement("div");
         btnCarrito.classList = "card-body"
         let cardItem = document.querySelector(`.itemId${producto.id}`)
-        btnCarrito.innerHTML = ` <p>Cantidad</p>
+        btnCarrito.innerHTML = ` <p>Cantidad:</p>
     <input id="itemCantidad${producto.id}" type="" value="0">
     <button class="btn btn-light" id="btnAdd${producto.id}">+</button>   
     <button class="btn btn-light" id="btnRemove${producto.id}">-</button>
@@ -63,53 +64,18 @@ function mostrarProductos() {
 
 
 
-let vistaCarrito = document.createElement("table");
-
-function mostrarCarrito(miCarrito) {
-
-    vistaCarrito.innerHTML = ""
-    vistaCarrito.classList = "vistaCarrito table table-striped"
-    vistaCarrito.setAttribute("id", "carritoActual")
-    vistaCarrito.innerHTML = `
-                          
-                            
-                            <thead>
-                            <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Producto</th>
-                            <th scope="col">Precio</th>
-                            <th scope="col">Cantidad</th>
-                            <th scope="col">Subtotal</th>
-                            </tr>
-                            </thead>
-                            <tbody class="listaProductos"></tbody>
-                      `;
-    mainApp.appendChild(vistaCarrito)
-    let listaCarrito = document.querySelector(".listaProductos");
 
 
-    miCarrito.producto.forEach(producto => {
-        let productosCarrito = document.createElement("tr");
-        productosCarrito.innerHTML = `
-                                
-                                <td>${producto.id}<img src="../productos_img/producto_${producto.id}.jpg"class="imagenesProductos card-img-top" style="height:100px ;width:100px" alt=""></td>
-                                <td><p>${producto.nombre}</p></td>
-                                <td><p>$${producto.precio}.-</p></td> 
-                                <td><p>${producto.cantidad}</p></td>
-                                <td><p>$${producto.cantidad*producto.precio}.-</p></td>   `
-        listaCarrito.appendChild(productosCarrito)
-    })
-
-    $(document).ready(function(){
-
-        $(".mainApp").append(`
-        <div class="modal fade" id="carritoModal" role="dialog">
+function mostrarCarrito(carritoActual) {
+    
+    $(".mainApp").append(`
+    <div class="modal fade" id="carritoModal" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                  
                             
-                            <h4 >#</h4>
+                           
                             <h4 >Producto</h4>
                             <h4 >Precio</h4>
                             <h4 >Cantidad</h4>
@@ -117,39 +83,45 @@ function mostrarCarrito(miCarrito) {
                             
                             
                 </div>
-                <div class="modal-body">
-                <p>${producto.id}<p><img src="../productos_img/producto_${producto.id}.jpg"class="imagenesProductos card-img-top" style="height:100px ;width:100px" alt="">
-                <p>${producto.nombre}</p>
-                <p>$${producto.precio}.-</p> 
-                <p>${producto.cantidad}</p>
-                <p>$${Number(producto.cantidad)*Number(producto.precio)}.-</p>
+                <div class="modal-body container">
+                
                 </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <div class="modal-footer footer-cart">
+                
+                <button>COMPRAR</button>
+                <button>SEGUIR ELIGIENDO</button>
+                <h4 class="totalCarrito"></h4>
 
                 </div>
         </div>`)
+    $(".modal-body").html("")
+    carritoActual.producto.forEach(producto => {
 
+
+
+        let productosCarrito = document.createElement("div");
+        productosCarrito.classList="row row-cols-4"
+        productosCarrito.innerHTML = `
+                                
+        
+        <div><img src="../productos_img/producto_${producto.id}.jpg"class="imagenesProductos card-img-top" style="height:50px ;width:50px" alt="">${producto.nombre}</div>
+        <div>$${producto.precio}.-</div> 
+        <div>${producto.cantidad}</div>
+        <div>$${Number(producto.cantidad)*Number(producto.precio)}.-</div>  `
+
+        $(".modal-body").append(productosCarrito);
+        
     })
+    $("#carritoModal").modal("toggle");
 
+}
 
-
+function mostrarTotalCarrito (){
+    let totalCarrito = 0
+    totalCarrito= miCarrito.calcularTotal();
+    $(".totalCarrito").html("")
+    $(".totalCarrito").text(`TOTAL $${totalCarrito}.-`)
 }
 
 
 
-function mostrarTotalCarrito() {
-    let listaCarrito = document.querySelector(".listaProductos");
-    let totalCarrito = document.createElement("tr");
-    totalCarrito.classList = ""
-
-    totalCarrito.innerHTML = ``;
-    let total = miCarrito.calcularTotal();
-    totalCarrito.innerHTML = `<td class ="text-end" colspan="4">TOTAL =</td><td> $${total}.-</td>`
-
-    listaCarrito.appendChild(totalCarrito)
-
-
-
-
-}
