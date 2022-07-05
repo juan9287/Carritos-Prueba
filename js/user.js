@@ -1,4 +1,16 @@
-let mainApp = document.querySelector(".mainApp");
+const miCarrito = new carrito([])
+
+function menuUser (){
+    document.body.innerHTML=`<main class="mainApp">
+    <nav><button type="button" id="myBtn" data-toggle="modal" data-target="#carritoModal" class="verCarrito">VER CARRITO</button></nav>
+    
+    <section class="galeria">
+
+    </section>
+    
+</main>`
+
+let mainApp = document.querySelector(".mainApp");         
 mainApp.classList = "mainApp container"
 crearTarjeta();
 mostrarProductos();
@@ -6,9 +18,9 @@ logicaCarrito();
 
 
 
-const miCarrito = new carrito([])
 
-function logicaCarrito() {
+
+function logicaCarrito() {                     
     
     let verCarrito = document.querySelector(".verCarrito");
     
@@ -18,6 +30,7 @@ function logicaCarrito() {
         mostrarTotalCarrito();
         
         console.log(miCarrito)
+        console.log(prodAlmacenados)
 
 
     })
@@ -48,4 +61,4 @@ function logicaCarrito() {
 
         )
     })
-}
+}}

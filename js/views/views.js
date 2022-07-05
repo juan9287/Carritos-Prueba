@@ -1,8 +1,8 @@
 
-function crearTarjeta() {
-
-
+function crearTarjeta() {                                  // Funcion para crear tarjetas en general
+  
     let galeria = document.querySelector(".galeria");
+    galeria.innerHTML=""
     galeria.classList = "galeria row row-cols-3"
 
     for (producto of prodAlmacenados) {
@@ -14,18 +14,18 @@ function crearTarjeta() {
         galeria.appendChild(tarjetaProducto);
         tarjetaProducto.innerHTML = `
                                 
-                                <img src="../productos_img/producto_${producto.id}.jpg"class="imagenesProductos card-img-top" style="height:200px" alt="">
+                                <img src="./productos_img/producto_${producto.id}.jpg"class="imagenesProductos card-img-top" style="height:200px" alt="">
                                 <div class="card-body">
                                 <h3 class="card-title">${producto.nombre}</h3>
                                 <p class="card-text">Precio :$${producto.precio}.- ${producto.um}</p>
                                 <p class=" categoriaProducto card-text">Categoria :${producto.categoria}</p> 
+                                <p id="prodStock"class="card-text">Stock: ${producto.stock}</p>
                                 </div>`;
     }
 }
 
-function mostrarProductos() {
-
-
+function mostrarProductos() {                                             // Funcion para crear el cuerpo de la tarjeta con botones + , - y agregar, para libre uso.
+ 
     prodAlmacenados.forEach(producto => {
         let btnCarrito = document.createElement("div");
         btnCarrito.classList = "card-body"
@@ -66,7 +66,7 @@ function mostrarProductos() {
 
 
 
-function mostrarCarrito(carritoActual) {
+function mostrarCarrito(carritoActual) {                                                    // Funcion para crear la vista del carrito
     
     $(".mainApp").append(`
     <div class="modal fade" id="carritoModal" role="dialog">
@@ -104,7 +104,7 @@ function mostrarCarrito(carritoActual) {
         productosCarrito.innerHTML = `
                                 
         
-        <div><img src="../productos_img/producto_${producto.id}.jpg"class="imagenesProductos card-img-top" style="height:50px ;width:50px" alt="">${producto.nombre}</div>
+        <div><img src="./productos_img/producto_${producto.id}.jpg"class="imagenesProductos card-img-top" style="height:50px ;width:50px" alt="">${producto.nombre}</div>
         <div>$${producto.precio}.-</div> 
         <div>${producto.cantidad}</div>
         <div>$${Number(producto.cantidad)*Number(producto.precio)}.-</div>  `
@@ -116,12 +116,105 @@ function mostrarCarrito(carritoActual) {
 
 }
 
-function mostrarTotalCarrito (){
+function mostrarTotalCarrito (){                                             // Funcion para crear linea del total del carrito.
     let totalCarrito = 0
     totalCarrito= miCarrito.calcularTotal();
     $(".totalCarrito").html("")
     $(".totalCarrito").text(`TOTAL $${totalCarrito}.-`)
 }
+
+
+
+
+
+
+
+
+
+// LADO ADMINISTRADOR
+
+function ingresoProducto(){                                                               // Funcion para crear el formulario para agregar productos
+        let mainUser = document.querySelector(".mainUser")
+        mainUser.innerHTML = "";
+
+
+        let formProductos = document.createElement("form");
+        mainUser.appendChild(formProductos);
+        formProductos.setAttribute("id", "formProductos")
+        let propProductos = ["Nombre", "Precio", "Categoria","Cantidad","Um"];
+
+        propProductos.forEach((propiedad) => {
+
+
+            if (propiedad === "Categoria") {
+                let categoriaProducto = document.createElement("div")
+                categoriaProducto.innerHTML = `
+                <label> Categoria </label>
+
+                <select id="categoriaProducto">
+                <option value="Panaderia">Panaderia</option>
+                <option value="Tortas">Tortas</option>
+                <option value="Catering">Catering</option>
+                <option value="Sandwiches">Sandwiches</option>
+                </select>
+                `
+                formProductos.appendChild(categoriaProducto)
+                let select = document.getElementById('categoriaProducto');
+                valueCategoria = select.options[select.selectedIndex].value;
+
+
+            } 
+            else if (propiedad==="Um"){
+                let umProducto = document.createElement("div")
+                umProducto.innerHTML = `
+                <label> Unidad de Medida </label>
+
+                <select id="umProducto">
+                <option value="kg">KG</option>
+                <option value="unidad">Unidad</option>
+                <option value="docena">Docena</option>
+                
+                <option value="1/4kg">1/4 Kg</option>
+                </select>
+                `
+                formProductos.appendChild(umProducto)
+                let uMselect = document.getElementById('umProducto');
+                valueUm = uMselect.options[uMselect.selectedIndex].value;
+
+            }
+            else {
+                let labelProductos = document.createElement("label");
+                labelProductos.innerHTML = propiedad;
+                formProductos.appendChild(labelProductos);
+
+                let inputProductos = document.createElement("input");
+                formProductos.appendChild(inputProductos);
+                let id = `${propiedad.toLowerCase()}Producto`
+                inputProductos.setAttribute("id", id);
+            }
+
+
+        })
+
+        let btnAgregar = document.createElement("button");
+        btnAgregar.innerText = "AGREGAR"
+        btnAgregar.setAttribute("onclick", "agregar()")
+        btnAgregar.setAttribute("type", "buton")
+        formProductos.appendChild(btnAgregar);
+
+        let btnSalir = document.createElement("button");
+        btnSalir.innerText = "Salir";
+        btnSalir.addEventListener("click",()=>{
+            menuAdmin();
+        })
+        formProductos.appendChild(btnSalir);
+        
+    
+
+}
+
+
+
 
 
 
