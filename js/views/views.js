@@ -151,12 +151,12 @@ function mostrarTotalCarrito() { // Funcion para crear linea del total del carri
 // LADO ADMINISTRADOR
 
 function ingresoProducto() { // Funcion para crear el formulario para agregar productos
-    let mainUser = document.querySelector(".mainUser")
-    mainUser.innerHTML = "";
+    let mainAdmin = document.querySelector(".mainAdmin")
+    mainAdmin.innerHTML = "";
 
 
     let formProductos = document.createElement("form");
-    mainUser.appendChild(formProductos);
+    mainAdmin.appendChild(formProductos);
     formProductos.setAttribute("id", "formProductos")
     let propProductos = ["Nombre", "Precio", "Categoria", "Cantidad", "Um"];
 

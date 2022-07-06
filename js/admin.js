@@ -1,12 +1,14 @@
 let totalStock = "";
 
+ 
 function menuAdmin() {
-    document.body.innerHTML = `<section class="mainUser galeria">
+    document.body.innerHTML = `<section id="mainAdmin" class="mainAdmin galeria">
     <button id="btnAgregarProducto">Agregar Prductos</button>
     <button id="btnVerProductos">Actualizar Stock</button>
+    <button id="btnClientes">Ver listado de clientes</button>
     <button id="btnSalir">Salir</button>  
     </section>  `
-
+    let mainAdmin =document.getElementById("mainAdmin");
 
     let btnAgregarProducto = document.getElementById("btnAgregarProducto");
     btnAgregarProducto.addEventListener("click", () => {
@@ -23,6 +25,11 @@ function menuAdmin() {
 
         menuInicial();
 
+    })
+
+    let btnClientes =document.getElementById("btnClientes")
+    btnClientes.addEventListener("click", ()=>{
+        traerDatosClientes();
     })
 }
 
