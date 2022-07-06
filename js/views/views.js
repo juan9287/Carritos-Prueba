@@ -1,8 +1,7 @@
+function crearTarjeta() { // Funcion para crear tarjetas en general
 
-function crearTarjeta() {                                  // Funcion para crear tarjetas en general
-  
     let galeria = document.querySelector(".galeria");
-    galeria.innerHTML=""
+    galeria.innerHTML = ""
     galeria.classList = "galeria row row-cols-3"
 
     for (producto of prodAlmacenados) {
@@ -24,8 +23,8 @@ function crearTarjeta() {                                  // Funcion para crear
     }
 }
 
-function mostrarProductos() {                                             // Funcion para crear el cuerpo de la tarjeta con botones + , - y agregar, para libre uso.
- 
+function mostrarProductos() { // Funcion para crear el cuerpo de la tarjeta con botones + , - y agregar, para libre uso.
+
     prodAlmacenados.forEach(producto => {
         let btnCarrito = document.createElement("div");
         btnCarrito.classList = "card-body"
@@ -66,8 +65,8 @@ function mostrarProductos() {                                             // Fun
 
 
 
-function mostrarCarrito(carritoActual) {                                                    // Funcion para crear la vista del carrito
-    
+function mostrarCarrito(carritoActual) { // Funcion para crear la vista del carrito
+
     $(".mainApp").append(`
     <div class="modal fade" id="carritoModal" role="dialog">
         <div class="modal-dialog">
@@ -88,8 +87,8 @@ function mostrarCarrito(carritoActual) {                                        
                 </div>
                 <div class="modal-footer footer-cart">
                 
-                <button>COMPRAR</button>
-                <button>SEGUIR ELIGIENDO</button>
+                <button id="btnComprar">COMPRAR</button>
+                <button id="btnContinue">SEGUIR ELIGIENDO</button>
                 <h4 class="totalCarrito"></h4>
 
                 </div>
@@ -100,7 +99,7 @@ function mostrarCarrito(carritoActual) {                                        
 
 
         let productosCarrito = document.createElement("div");
-        productosCarrito.classList="row row-cols-4"
+        productosCarrito.classList = "row row-cols-4"
         productosCarrito.innerHTML = `
                                 
         
@@ -110,15 +109,33 @@ function mostrarCarrito(carritoActual) {                                        
         <div>$${Number(producto.cantidad)*Number(producto.precio)}.-</div>  `
 
         $(".modal-body").append(productosCarrito);
-        
+
     })
     $("#carritoModal").modal("toggle");
 
+    let btnComprar = document.getElementById("btnComprar");
+    btnComprar.addEventListener("click", () => {
+
+        carritoActual.producto.forEach(producto => {
+            prodAlmacenados[producto.id - 1].stock = (prodAlmacenados[producto.id - 1].stock) - producto.cantidad
+        })
+        almacenarProd()
+        console.log(prodAlmacenados)
+        $("#carritoModal").modal("hide");
+        menuUser()
+
+    })
+    let btnContinue = document.getElementById("btnContinue");
+    btnContinue.addEventListener("click", () => {
+        $("#carritoModal").modal("hide");
+        menuUser();
+    })
+
 }
 
-function mostrarTotalCarrito (){                                             // Funcion para crear linea del total del carrito.
+function mostrarTotalCarrito() { // Funcion para crear linea del total del carrito.
     let totalCarrito = 0
-    totalCarrito= miCarrito.calcularTotal();
+    totalCarrito = miCarrito.calcularTotal();
     $(".totalCarrito").html("")
     $(".totalCarrito").text(`TOTAL $${totalCarrito}.-`)
 }
@@ -133,22 +150,22 @@ function mostrarTotalCarrito (){                                             // 
 
 // LADO ADMINISTRADOR
 
-function ingresoProducto(){                                                               // Funcion para crear el formulario para agregar productos
-        let mainUser = document.querySelector(".mainUser")
-        mainUser.innerHTML = "";
+function ingresoProducto() { // Funcion para crear el formulario para agregar productos
+    let mainUser = document.querySelector(".mainUser")
+    mainUser.innerHTML = "";
 
 
-        let formProductos = document.createElement("form");
-        mainUser.appendChild(formProductos);
-        formProductos.setAttribute("id", "formProductos")
-        let propProductos = ["Nombre", "Precio", "Categoria","Cantidad","Um"];
+    let formProductos = document.createElement("form");
+    mainUser.appendChild(formProductos);
+    formProductos.setAttribute("id", "formProductos")
+    let propProductos = ["Nombre", "Precio", "Categoria", "Cantidad", "Um"];
 
-        propProductos.forEach((propiedad) => {
+    propProductos.forEach((propiedad) => {
 
 
-            if (propiedad === "Categoria") {
-                let categoriaProducto = document.createElement("div")
-                categoriaProducto.innerHTML = `
+        if (propiedad === "Categoria") {
+            let categoriaProducto = document.createElement("div")
+            categoriaProducto.innerHTML = `
                 <label> Categoria </label>
 
                 <select id="categoriaProducto">
@@ -158,15 +175,14 @@ function ingresoProducto(){                                                     
                 <option value="Sandwiches">Sandwiches</option>
                 </select>
                 `
-                formProductos.appendChild(categoriaProducto)
-                let select = document.getElementById('categoriaProducto');
-                valueCategoria = select.options[select.selectedIndex].value;
+            formProductos.appendChild(categoriaProducto)
+            let select = document.getElementById('categoriaProducto');
+            valueCategoria = select.options[select.selectedIndex].value;
 
 
-            } 
-            else if (propiedad==="Um"){
-                let umProducto = document.createElement("div")
-                umProducto.innerHTML = `
+        } else if (propiedad === "Um") {
+            let umProducto = document.createElement("div")
+            umProducto.innerHTML = `
                 <label> Unidad de Medida </label>
 
                 <select id="umProducto">
@@ -177,44 +193,37 @@ function ingresoProducto(){                                                     
                 <option value="1/4kg">1/4 Kg</option>
                 </select>
                 `
-                formProductos.appendChild(umProducto)
-                let uMselect = document.getElementById('umProducto');
-                valueUm = uMselect.options[uMselect.selectedIndex].value;
+            formProductos.appendChild(umProducto)
+            let uMselect = document.getElementById('umProducto');
+            valueUm = uMselect.options[uMselect.selectedIndex].value;
 
-            }
-            else {
-                let labelProductos = document.createElement("label");
-                labelProductos.innerHTML = propiedad;
-                formProductos.appendChild(labelProductos);
+        } else {
+            let labelProductos = document.createElement("label");
+            labelProductos.innerHTML = propiedad;
+            formProductos.appendChild(labelProductos);
 
-                let inputProductos = document.createElement("input");
-                formProductos.appendChild(inputProductos);
-                let id = `${propiedad.toLowerCase()}Producto`
-                inputProductos.setAttribute("id", id);
-            }
+            let inputProductos = document.createElement("input");
+            formProductos.appendChild(inputProductos);
+            let id = `${propiedad.toLowerCase()}Producto`
+            inputProductos.setAttribute("id", id);
+        }
 
 
-        })
+    })
 
-        let btnAgregar = document.createElement("button");
-        btnAgregar.innerText = "AGREGAR"
-        btnAgregar.setAttribute("onclick", "agregar()")
-        btnAgregar.setAttribute("type", "buton")
-        formProductos.appendChild(btnAgregar);
+    let btnAgregar = document.createElement("button");
+    btnAgregar.innerText = "AGREGAR"
+    btnAgregar.setAttribute("onclick", "agregar()")
+    btnAgregar.setAttribute("type", "buton")
+    formProductos.appendChild(btnAgregar);
 
-        let btnSalir = document.createElement("button");
-        btnSalir.innerText = "Salir";
-        btnSalir.addEventListener("click",()=>{
-            menuAdmin();
-        })
-        formProductos.appendChild(btnSalir);
-        
-    
+    let btnSalir = document.createElement("button");
+    btnSalir.innerText = "Salir";
+    btnSalir.addEventListener("click", () => {
+        menuAdmin();
+    })
+    formProductos.appendChild(btnSalir);
+
+
 
 }
-
-
-
-
-
-
